@@ -27,8 +27,7 @@ router.get('/search', async (req, res, next) => {
     }
   })
 
-
-  res.json({podcasts})
+  res.json({results})
 })
 
 router.post('/search', async (req, res, next) => {
@@ -45,14 +44,14 @@ router.post('/search', async (req, res, next) => {
   const { results } = data
   const podcasts = results.map(podcast => {
     return {
+      id: podcast.trackId,
       name: podcast.artistName,
+      image: podcast.artworkUrl60,
+      categories: podcast.genres,
       trackName: podcast.trackName,
-      icon: podcast.artWorkUrl600,
-      genres: podcast.genres,
       feed: podcast.feedUrl
     }
   })
-
 
   res.json({podcasts})
 })
