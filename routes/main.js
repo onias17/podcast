@@ -5,4 +5,8 @@ router.get('/', (req, res, next) => {
   res.render('home')
 })
 
+router.get('/react', (req, res, next) => {
+  res.render('index')
+})
+
 module.exports = router;
