@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import Episode from './components/Episode'
 import Header from './components/Header'
 import PodcastRow from './components/PodcastRow'
+import axios from 'axios'
 
 const App = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+
   const podcasts = [
     {id: 0, name: 'podcast 1', image: '/images/person_1.jpg', categories: ['sports', 'entertainment']},
     {id: 1, name: 'podcast 2', image: '/images/person_2.jpg', categories: ['news', 'politics']},
@@ -19,6 +22,32 @@ const App = () => {
     {id: 4, title: 'track 5', image: '/images/img_5.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
   ]
 
+  const onInputTyped = (event) => {
+    // console.log('onInputTyped: '+event.target.value)
+    setSearchTerm(event.target.value)
+  }
+
+  const onSearchButtonClicked = (event) => {
+    console.log('onSearchButtonClicked: ' + searchTerm)
+
+    axios({
+      url: '/search',
+      method: 'post',
+      body: {
+        term: 'searchTerm'
+      },
+      options: {
+        headers: {Accept: 'application/json'}
+      }
+    })
+    .then(({data}) => {
+      console.log('PODCASTS: ' + JSON.stringify(data))
+    })
+    .catch(err => {
+
+    })
+  }
+
   return (
     <div className="site-wrap">
       <Header />
@@ -29,8 +58,8 @@ const App = () => {
               <div className="featured-user mb-5 mb-lg-0">
                 <h3 className="mb-2">Search Podcasts</h3>
                 <div style={{ display: "flex" }}>
-                  <input type="text" style={{ height: 32 }} className="form-control mb-4" />
-                  <button className="btn btn-info p-1 ml-2" style={{ height: 32 }}>GO!</button>
+                  <input onChange={onInputTyped} type="text" style={{ height: 32 }} className="form-control mb-4" />
+                  <button onClick={onSearchButtonClicked} className="btn btn-info p-1 ml-2" style={{ height: 32 }}>GO!</button>
                 </div>
                 <ul className="list-unstyled">
                   {podcasts.map(podcast => <PodcastRow key={podcast.id} {...podcast}/>)}
