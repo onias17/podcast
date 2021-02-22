@@ -360,14 +360,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var PodcastRow = function PodcastRow(_ref) {
   var name = _ref.name,
       image = _ref.image,
-      categories = _ref.categories;
+      categories = _ref.categories,
+      onSelect = _ref.onSelect;
 
+  // const clickHandler = (e) => {
+  //   e.preventDefault()
+  //   onSelect({
+  //     name
+  //   })
+
+  // }
   return _react2.default.createElement(
     "li",
     null,
     _react2.default.createElement(
       "a",
-      { href: "#", className: "d-flex align-items-center  p-2" },
+      { href: "#", onClick: onSelect, className: "d-flex align-items-center  p-2" },
       _react2.default.createElement("img", { src: image, alt: "Image", className: "img-fluid mr-2" }),
       _react2.default.createElement(
         "div",
@@ -442,13 +450,29 @@ var App = function App() {
       podcasts = _useState4[0],
       setPodcasts = _useState4[1];
 
+  var _useState5 = (0, _react.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      episodes = _useState6[0],
+      setEpisodes = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      selectedPodcast = _useState8[0],
+      setSelectedPodcast = _useState8[1];
+
   // const podcasts = [
   //   {id: 0, name: 'podcast 1', image: '/images/person_1.jpg', categories: ['sports', 'entertainment']},
   //   {id: 1, name: 'podcast 2', image: '/images/person_2.jpg', categories: ['news', 'politics']},
   //   {id: 2, name: 'podcast 3', image: '/images/person_3.jpg', categories: ['business', 'economics']},
   // ]
 
-  var episodes = [{ id: 0, title: 'track 1', image: '/images/img_1.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88' }, { id: 1, title: 'track 2', image: '/images/img_2.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88' }, { id: 2, title: 'track 3', image: '/images/img_3.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88' }, { id: 3, title: 'track 4', image: '/images/img_4.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88' }, { id: 4, title: 'track 5', image: '/images/img_5.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88' }];
+  // const episodes = [
+  //   {id: 0, title: 'track 1', image: '/images/img_1.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+  //   {id: 1, title: 'track 2', image: '/images/img_2.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+  //   {id: 2, title: 'track 3', image: '/images/img_3.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+  //   {id: 3, title: 'track 4', image: '/images/img_4.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+  //   {id: 4, title: 'track 5', image: '/images/img_5.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+  // ]
 
   var onInputTyped = function onInputTyped(event) {
     // console.log('onInputTyped: '+event.target.value)
@@ -474,6 +498,16 @@ var App = function App() {
       setPodcasts(data.podcasts);
     }).catch(function (err) {});
   };
+
+  var selectPodcast = function selectPodcast(podcast, event) {
+    event.preventDefault();
+    console.log('selectedPodcast: ' + JSON.stringify(podcast));
+    setSelectedPodcast(podcast);
+  };
+
+  (0, _react.useEffect)(function () {
+    console.log('selected podcast changed: ' + JSON.stringify(selectedPodcast));
+  }, [selectedPodcast]);
 
   return _react2.default.createElement(
     'div',
@@ -513,7 +547,9 @@ var App = function App() {
                 'ul',
                 { className: 'list-unstyled' },
                 podcasts.map(function (podcast) {
-                  return _react2.default.createElement(_PodcastRow2.default, _extends({ key: podcast.id }, podcast));
+                  return _react2.default.createElement(_PodcastRow2.default, _extends({ key: podcast.id }, podcast, { onSelect: function onSelect(e) {
+                      return selectPodcast(podcast, e);
+                    } }));
                 })
               )
             )
