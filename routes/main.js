@@ -6,6 +6,15 @@ router.get('/', (req, res, next) => {
   res.render('index')
 })
 
+router.get('/feed', (req, res, next) => {
+  const url = req.query.url
+
+  res.json({
+    data: 'Christ is King',
+    url
+  })
+})
+
 router.get('/search', async (req, res, next) => {
   const url = 'https://itunes.apple.com/search?term=sports&country=US&media=podcast'
   const { data } = await axios({

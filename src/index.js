@@ -60,6 +60,21 @@ const App = () => {
 
   useEffect(() => {
     console.log('selected podcast changed: ' +JSON.stringify(selectedPodcast))
+    if (!selectedPodcast)
+      return
+      
+    const url = `/feed?url=${selectedPodcast.feed}`
+    axios({
+      url,
+      method: 'get'
+
+    })
+    .then(({data}) => {
+      console.log('FEED: ' + JSON.stringify(data))
+    })
+    .catch(err => {
+
+    })
   }, [selectedPodcast])
 
   return (

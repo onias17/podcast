@@ -507,6 +507,18 @@ var App = function App() {
 
   (0, _react.useEffect)(function () {
     console.log('selected podcast changed: ' + JSON.stringify(selectedPodcast));
+    if (!selectedPodcast) return;
+
+    var url = '/feed?url=' + selectedPodcast.feed;
+    (0, _axios2.default)({
+      url: url,
+      method: 'get'
+
+    }).then(function (_ref2) {
+      var data = _ref2.data;
+
+      console.log('FEED: ' + JSON.stringify(data));
+    }).catch(function (err) {});
   }, [selectedPodcast]);
 
   return _react2.default.createElement(
