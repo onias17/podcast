@@ -518,6 +518,20 @@ var App = function App() {
       var data = _ref2.data;
 
       console.log('FEED: ' + JSON.stringify(data));
+      var item = data.item;
+
+      //   {id: 0, title: 'track 1', image: '/images/img_1.jpg', trackUrl: 'http://hwcdn.libsyn.com/p/e/2/d/e2d49676d65218ec/p1541a.mp3?c_id=84308228&cs_id=84308228&expiration=1601254668&hwt=ccab3206052417d0e901722ab00c9c88'},
+
+      var tracks = item.map(function (t, index) {
+        return {
+          id: index,
+          title: t.title[0],
+          image: selectedPodcast.image,
+          trackUrl: t.enclosure[0]['$'].urls
+        };
+      });
+
+      setEpisodes(tracks);
     }).catch(function (err) {});
   }, [selectedPodcast]);
 

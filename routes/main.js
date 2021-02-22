@@ -1,18 +1,38 @@
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
+const { parseString } = require('xml2js')
 
 router.get('/', (req, res, next) => {
   res.render('index')
 })
 
-router.get('/feed', (req, res, next) => {
+router.get('/feed', async (req, res, next) => {
   const url = req.query.url
 
-  res.json({
-    data: 'Christ is King',
-    url
+  const { data } = await axios({
+    url,
+    method: 'get'
   })
+
+  parseString(data, (err, json) => {
+    if (err) {
+      // handle error
+      return
+    }
+    
+    const {rss} = json
+    const {channel} = rss
+    const payload = channel[0]
+    res.json(payload)
+  })
+
+  // res.send(data)
+
+  // res.json({
+  //   data: 'Christ is King',
+  //   url
+  // })
 })
 
 router.get('/search', async (req, res, next) => {
